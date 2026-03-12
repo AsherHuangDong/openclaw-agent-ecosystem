@@ -1,0 +1,53 @@
+{
+  "name": "openclaw-agent-ecosystem",
+  "version": "2.0.0",
+  "description": "OpenClaw Agent Ecosystem - Complete Agent infrastructure with evaluation, persistence, and security",
+  "main": "index.js",
+  "types": "index.d.ts",
+  "scripts": {
+    "install:deps": "npm install",
+    "test": "npx tsx agent-eval/run.ts run",
+    "test:real": "npx tsx agent-eval/real-run.ts all",
+    "test:security": "npx tsx agent-eval/real-run.ts security",
+    "test:basic": "npx tsx agent-eval/real-run.ts basic",
+    "eval": "npx tsx agent-eval/run.ts run",
+    "eval:real": "npx tsx agent-eval/real-run.ts all",
+    "eval:security": "npx tsx agent-eval/real-run.ts security",
+    "eval:stats": "npx tsx agent-eval/run.ts stats",
+    "eval:list": "npx tsx agent-eval/run.ts list",
+    "clean": "rm -rf eval-results/ state/persist/*",
+    "reset": "rm -rf node_modules/ && npm install",
+    "help": "echo 'OpenClaw Agent Ecosystem v2.0.0\\n\\nCommands:\\n  npm run eval          - Run simulated evaluation\\n  npm run eval:real     - Run real agent tests\\n  npm run eval:security - Run security tests\\n  npm run eval:stats    - Show test statistics\\n  npm run test          - Same as eval\\n  npm run clean         - Clean output directories\\n'"
+  },
+  "keywords": [
+    "agent",
+    "llm",
+    "ai",
+    "evaluation",
+    "task-engine",
+    "context-bus",
+    "sandbox",
+    "self-evolution",
+    "multi-agent"
+  ],
+  "author": "OpenClaw Team",
+  "license": "MIT",
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/yourusername/openclaw-agent-ecosystem.git"
+  },
+  "bugs": {
+    "url": "https://github.com/yourusername/openclaw-agent-ecosystem/issues"
+  },
+  "homepage": "https://github.com/yourusername/openclaw-agent-ecosystem#readme",
+  "engines": {
+    "node": ">=18.0.0"
+  },
+  "devDependencies": {
+    "@types/node": "^20.0.0",
+    "typescript": "^5.0.0"
+  },
+  "dependencies": {
+    "uuid": "^9.0.0"
+  }
+}

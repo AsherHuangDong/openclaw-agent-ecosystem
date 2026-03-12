@@ -1,0 +1,71 @@
+# 依赖
+node_modules/
+
+# 个人数据
+MEMORY.md
+USER.md
+IDENTITY.md
+SOUL.md
+HEARTBEAT.md
+memory/
+state/
+
+# 测试文件
+test-*.ts
+test-*.mjs
+*-test.json
+tests/
+regression-tests/
+regression-suite.ts
+
+# 输出/日志
+output/
+eval-results/
+*.log
+reports/
+
+# 临时文件
+*.tmp
+*.temp
+temp/
+
+# 图片/视频
+*.png
+*.jpg
+*.mp4
+ks_debug*
+
+# 编辑器
+.idea/
+.vscode/
+*.swp
+
+# 系统
+.DS_Store
+Thumbs.db
+
+# 其他不需要的
+.clawhub/
+.openclaw/
+.pgdata/
+scripts/
+bootstrap-*.md
+KERNEL*.md
+BOOTSTRAP.md
+CALENDAR*.md
+GATEWAY*.md
+SESSION-STATE.md
+EVOLVED_SKILLS.md
+AGENTS.md
+CALENDAR*.md
+embed-*.json
+tmp_*.py
+*.pyc
+__pycache__/
+package-lock.json
+evolution/
+learning/experiences.md
+learning/failures.md
+learning/successes.md
+learning/learning-log*.md
+learning/few-shots/

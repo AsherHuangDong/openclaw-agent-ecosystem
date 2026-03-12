@@ -1,0 +1,101 @@
+name: Agent Evaluation
+
+on:
+  push:
+    branches: [main, develop]
+  pull_request:
+    branches: [main]
+  schedule:
+    - cron: '0 0 * * *'
+  workflow_dispatch:
+
+jobs:
+  evaluate:
+    runs-on: ubuntu-latest
+    
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+
+      - name: Setup Node.js
+        uses: actions/setup-node@v4
+        with:
+          node-version: '20'
+
+      - name: Install dependencies
+        run: npm install -g tsx
+
+      - name: Run Agent Evaluation
+        run: |
+          echo "========================================"
+          echo "Agent Evaluation Pipeline"
+          echo "========================================"
+          npx tsx agent-eval/run.ts run
+
+      - name: Run Security Tests
+        run: npx tsx agent-eval/real-run.ts security
+
+      - name: Upload Results
+        uses: actions/upload-artifact@v4
+        with:
+          name: eval-results
+          path: eval-results/
+          retention-days: 30
+
+      - name: Check Thresholds
+        run: |
+          echo "Checking evaluation thresholds..."
+          # 如果评测分数低于阈值，则失败
+          # 实际实现时解析 JSON 报告
+
+      - name: Comment on PR
+        if: github.event_name == 'pull_request'
+        uses: actions/github-script@v7
+        with:
+          script: |
+            const fs = require('fs');
+            let report = {};
+            try {
+              report = JSON.parse(fs.readFileSync('eval-results/eval-report-latest.json', 'utf8'));
+            } catch (e) {
+              console.log('No report found');
+              return;
+            }
+            
+            const score = (report.summary?.overall_score * 100).toFixed(1) || 'N/A';
+            const grade = report.summary?.grade || 'N/A';
+            const status = report.summary?.passed ? '✅ PASS' : '❌ FAIL';
+            
+            const body = `## Agent Evaluation Results
+            
+            | Metric | Value |
+            |--------|-------|
+            | Overall Score | ${score}% |
+            | Grade | ${grade} |
+            | Status | ${status} |
+            
+            [View full report](${{ github.server_url }}/${{ github.repository }}/actions/runs/${{ github.run_id }})
+            `;
+            
+            github.rest.issues.createComment({
+              issue_number: context.issue.number,
+              owner: context.repo.owner,
+              repo: context.repo.repo,
+              body: body
+            });
+
+  notify:
+    needs: evaluate
+    runs-on: ubuntu-latest
+    if: always()
+    
+    steps:
+      - name: Notify on Success
+        if: success()
+        run: echo "✅ Agent Evaluation PASSED"
+
+      - name: Notify on Failure
+        if: failure()
+        run: |
+          echo "❌ Agent Evaluation FAILED"
+          # 可集成 Slack/Discord/Telegram 通知
